@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from matplotlib import cm
 from mpl_toolkits.mplot3d import axes3d, Axes3D
 import numpy as np
+import json
 
 Nsa = dict()
 Ns = dict()
@@ -105,11 +106,21 @@ while True:
     score = sum(r_l)
     avg_score = avg_score * 0.9999 + score * 0.0001
 
-    if k%1000 == 0:
+    if k%100000 == 0:
         print("Running avg: %.2f" % avg_score)
         surf = plot_V(ax ,xx, yy, surf)
         plt.draw()
         plt.pause(0.05)
+
+    if k%1000000 == 0:
+        print("Saved qsa to file...")
+        with open("mc-qvalues.json", 'w') as f:
+            Qsa_out = dict()
+            for key, v in Qsa.items():
+                ((a, b, c), d) = key
+                Qsa_out[str(a) + " " + str(b) + " " + str(c) + " " + str(d)] = v
+            f.write(json.dumps(Qsa_out))
+
 
     # Increment k
     k += 1

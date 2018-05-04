@@ -25,6 +25,7 @@ class Easy21Env(object):
         self.playersum = self.draw_card(red=False)
         self.dealershowing = self.draw_card(red=False)
         self.terminated = False
+        return self.get_state()
 
     def get_state(self):
         return self.playersum, self.dealershowing, self.terminated
