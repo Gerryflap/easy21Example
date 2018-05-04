@@ -48,6 +48,7 @@ def run_episode(env, k, draw=False):
     s = env.reset()
     done = False
     while not done:
+        s *= np.array([1,1/2.0,10.0,1/2.0])
         s = str(np.round(s, 0))
         a = get_e_greedy(s)
         sa_list.append((s, a))
@@ -77,10 +78,11 @@ while True:
 
     # Keep "avg"_score for fun and debugging:
     score = sum(r_l)
-    avg_score = avg_score * 0.9999 + score * 0.0001
+    avg_score = avg_score * 0.99 + score * 0.01
 
     if k%1000 == 0:
         print("Running avg: %.2f" % avg_score)
+        print("Qsa state space: ", len(Qsa))
         run_episode(env, k, True)
     # Increment k
     k += 1
