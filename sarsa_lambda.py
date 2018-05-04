@@ -6,7 +6,7 @@ import numpy as np
 
 
 class SarsaLambdaAgent(object):
-    def __init__(self, l, action_space, gamma = 1, N0 = 100):
+    def __init__(self, l, action_space, gamma = 1, N0 = 1000):
         self.l = l
         self.Qsa = dict()
         self.Nsa = dict()
@@ -62,3 +62,26 @@ class SarsaLambdaAgent(object):
             s, a = s_prime, a_prime
             score += r
         return score
+
+# In order to use the SARSA-λ agent with the gym environments you should use this wrapper:
+class GymEnvWrapper(object):
+    def __init__(self, gym_env, state_transformer):
+        self.env = gym_env
+        self.terminated = True
+        self.render = False
+        self.state_transformer = state_transformer
+
+    def reset(self):
+        self.terminated = False
+        return self.state_transformer(self.env.reset())
+
+    def step(self, action):
+        s, r, done, _ = self.env.step(action)
+        if self.render:
+            self.env.render()
+        self.terminated = done
+        return self.state_transformer(s), r
+
+    def set_rendering(self, value: bool):
+        self.render = value
+
