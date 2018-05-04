@@ -5,7 +5,7 @@ from matplotlib import cm
 import numpy as np
 from mpl_toolkits.mplot3d import axes3d, Axes3D
 
-agent = sarsa_lambda.SarsaLambdaAgent(0, easy21.action_space, gamma=1, N0=100)
+agent = sarsa_lambda.SarsaLambdaAgent(0.2, easy21.action_space, gamma=1, N0=200)
 env = easy21.Easy21Env()
 
 fig = plt.figure()
@@ -38,9 +38,9 @@ k = 0
 surf = None
 while True:
     score = agent.run_episode(env)
-    avg_score = avg_score*0.999 + score*0.001
+    avg_score = avg_score*0.9999 + score*0.0001
     if k%10000 == 0:
-        print(avg_score)
+        print("Avg_score: %.2f"%avg_score)
         surf = plot_V(ax ,xx, yy, surf, agent)
         plt.draw()
         plt.pause(0.05)

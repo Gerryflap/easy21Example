@@ -26,7 +26,7 @@ class SarsaLambdaAgent(object):
 
     def count_N(self, s, a):
         self.Nsa[(s,a)] = self.Nsa.get((s,a), 0) + 1
-        self.Ns[s] = self.Nsa.get(s, 0) + 1
+        self.Ns[s] = self.Ns.get(s, 0) + 1
 
     def get_e_greedy(self, s):
         e = self.N0 / (self.N0 + self.N(s))
