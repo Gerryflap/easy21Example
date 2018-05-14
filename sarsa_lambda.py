@@ -42,16 +42,24 @@ class SarsaLambdaAgent(object):
         else:
             return random.choice(list(self.action_space))
 
-    def run_episode(self, env):
+    def run_episode(self, env, verbose=False):
         s = env.reset()
+        if verbose:
+            print("State: ", s)
         a = self.get_e_greedy(s)
+        if verbose:
+            print("Chose action: ", a)
 
         E = dict()
         score = 0
 
         while not env.terminated:
             s_prime, r = env.step(a)
+            if verbose:
+                print("State, reward: ", s_prime, r)
             a_prime = self.get_e_greedy(s_prime)
+            if verbose:
+                print("Action: ", a_prime)
             delta = r + self.gamma * self.Q(s_prime, a_prime) - self.Q(s, a)
             E[(s,a)] = E.get((s,a), 0) + 1
             self.count_N(s,a)
@@ -61,6 +69,8 @@ class SarsaLambdaAgent(object):
                 E[(s,a)] *= self.gamma * self.l
             s, a = s_prime, a_prime
             score += r
+        if verbose:
+            print("Game ended\n")
         return score
 
 # In order to use the SARSA-λ agent with the gym environments you should use this wrapper:
