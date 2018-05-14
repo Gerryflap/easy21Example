@@ -179,11 +179,11 @@ if __name__ == "__main__":
 
     def network(x):
         ks = tf.keras
+        x = ks.layers.Dense(150, activation='relu')(x)
         x = ks.layers.Dense(50, activation='relu')(x)
         return ks.layers.Dense(4, activation='linear')(x)
 
-    agent = DeepQAgent([0,1,2,3], network, alpha=0.0001, state_shape=(8,), epsilon=1.0, epsilon_step_factor=0.9995, epsilon_min=0.1,
-                       gamma=0.9, fixed_steps=100, reward_scale=0.1)
+    agent = DeepQAgent([0,1,2,3], network, alpha=0.001, state_shape=(8,), epsilon=1.0, epsilon_step_factor=0.9999, epsilon_min=0.05, gamma=1.0, fixed_steps=100, reward_scale=0.01, replay_mem_size=10000)
     with tf.Session() as sess:
         init = tf.global_variables_initializer()
         sess.run(init)
